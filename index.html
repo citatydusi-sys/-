@@ -1,0 +1,1280 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Маленький сюрприз 💌</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Фоновое изображение */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('1.jpg') center/cover no-repeat;
+            z-index: -2;
+        }
+
+        /* Темный оверлей для лучшей читаемости текста */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: -1;
+        }
+
+        /* Основной контейнер */
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+            padding: 20px;
+            padding-bottom: 0px;
+        }
+
+        /* Карточка с текстом */
+        .welcome-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            padding: 3rem 2.5rem;
+            max-width: 600px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 1s ease-out;
+        }
+
+        /* Заголовок */
+        .title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 600;
+            color: #ffffff;
+            line-height: 1.4;
+            margin-bottom: 1.5rem;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+            letter-spacing: 0.5px;
+        }
+
+        /* Подзаголовок */
+        .subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2.5rem;
+            font-style: italic;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Кнопка */
+        .btn {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a6f);
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 12px 35px rgba(255, 107, 107, 0.6);
+        }
+
+        .btn:active {
+            transform: translateY(-1px) scale(1.02);
+        }
+
+        /* Анимации */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Плавающие сердечки */
+        .floating-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 20px;
+            animation: float 6s ease-in-out infinite;
+            opacity: 0.7;
+        }
+
+        .heart:nth-child(1) { left: 10%; top: 20%; animation-delay: 0s; }
+        .heart:nth-child(2) { left: 85%; top: 30%; animation-delay: 2s; }
+        .heart:nth-child(3) { left: 20%; top: 70%; animation-delay: 4s; }
+        .heart:nth-child(4) { left: 80%; top: 80%; animation-delay: 1s; }
+        .heart:nth-child(5) { left: 50%; top: 10%; animation-delay: 3s; }
+
+        @keyframes float {
+            0%, 100% { 
+                transform: translateY(0px) rotate(0deg); 
+                opacity: 0.7;
+            }
+            50% { 
+                transform: translateY(-20px) rotate(5deg); 
+                opacity: 1;
+            }
+        }
+
+        /* Вторая страница - выбор приключений */
+        .page {
+            display: none;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        .page-2 {
+            position: relative;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -2;
+        }
+        
+        .video-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: -1;
+        }
+        
+        .adventures-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 20px;
+            text-align: center;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .adventures-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+            letter-spacing: 1px;
+            position: absolute;
+            top: 30px;
+            z-index: 10;
+        }
+        
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            height: 85vh;
+            max-width: 100%;
+            overflow: hidden;
+        }
+        
+        .carousel {
+            display: flex;
+            flex-direction: row;
+            gap: 0;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            height: 100%;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            scroll-snap-type: x mandatory;
+        }
+        
+        .carousel::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .adventure-card {
+            min-width: 100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+            scroll-snap-align: start;
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .adventure-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .adventure-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70%;
+            border-radius: 30px 30px 0 0;
+            object-fit: cover;
+            z-index: 1;
+        }
+        
+        /* Оверлей для лучшей читаемости текста */
+        .adventure-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.4) 100%);
+            border-radius: 30px 30px 0 0;
+            z-index: 1;
+        }
+        
+        .card-content {
+            position: relative;
+            z-index: 2;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(15px);
+            width: 100%;
+            padding: 2rem;
+            border-radius: 0 0 30px 30px;
+        }
+        
+        .adventure-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+        }
+        
+        .adventure-description {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .adventure-btn {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a6f);
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .adventure-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.6);
+        }
+        
+        .carousel-hint {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1rem;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 12px 24px;
+            border-radius: 25px;
+            backdrop-filter: blur(15px);
+            z-index: 10;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Третья страница - выбор даты */
+        .page-3 {
+            position: relative;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        .date-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .date-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 2rem;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+            letter-spacing: 1px;
+        }
+        
+        .calendar-wrapper {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            padding: 2rem;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+        }
+        
+        .calendar {
+            width: 100%;
+        }
+        
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .month-year {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #ffffff;
+        }
+        
+        .nav-button {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+        
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+        }
+        
+        .day-header {
+            padding: 10px 5px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            text-align: center;
+        }
+        
+        .day {
+            padding: 12px 8px;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
+        }
+        
+        .day:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+        
+        .day.other-month {
+            color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .day.selected {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a6f);
+            color: white;
+            font-weight: 700;
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.5);
+        }
+        
+        .day.today {
+            border: 2px solid rgba(255, 255, 255, 0.6);
+        }
+        
+        .confirm-date-btn {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a6f);
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 2rem;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        
+        .confirm-date-btn.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        .confirm-date-btn.active:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 12px 35px rgba(255, 107, 107, 0.6);
+        }
+        
+        /* Четвертая страница - отправка информации */
+        .page-4 {
+            position: relative;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        .send-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .send-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 1.5rem;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+            letter-spacing: 1px;
+        }
+        
+        .send-subtitle {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2rem;
+            line-height: 1.5;
+        }
+        
+        .summary-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            padding: 2rem;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+            margin-bottom: 2rem;
+        }
+        
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .summary-item:last-child {
+            border-bottom: none;
+        }
+        
+        .summary-label {
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.95rem;
+        }
+        
+        .summary-value {
+            font-weight: 700;
+            color: #ffffff;
+            text-align: right;
+            font-size: 1rem;
+        }
+        
+        .contact-form {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            padding: 2rem;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+            margin-bottom: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: rgba(255, 107, 107, 0.6);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 20px rgba(255, 107, 107, 0.3);
+        }
+        
+        .send-btn {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a6f);
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            width: 100%;
+        }
+        
+        .send-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 12px 35px rgba(255, 107, 107, 0.6);
+        }
+        
+        .success-message {
+            background: rgba(76, 175, 80, 0.2);
+            border: 2px solid rgba(76, 175, 80, 0.4);
+            color: #ffffff;
+            padding: 1rem 1.5rem;
+            border-radius: 15px;
+            margin-top: 1rem;
+            backdrop-filter: blur(10px);
+            display: none;
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .welcome-card {
+                padding: 2rem 1.5rem;
+                margin: 20px;
+            }
+            
+            .title {
+                font-size: 1.8rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            .btn {
+                padding: 16px 32px;
+                font-size: 1rem;
+            }
+            
+            .adventures-title {
+                font-size: 1.6rem;
+                top: 20px;
+            }
+            
+            .carousel-container {
+                height: 80vh;
+            }
+            
+            .adventure-image {
+                font-size: 5rem;
+            }
+            
+            .card-content {
+                padding: 1.5rem;
+            }
+            
+            .adventure-title {
+                font-size: 1.6rem;
+            }
+            
+            .adventure-description {
+                font-size: 1rem;
+            }
+            
+            .adventure-btn {
+                padding: 16px 32px;
+                font-size: 1rem;
+            }
+            
+            .date-title {
+                font-size: 1.8rem;
+                margin-bottom: 1.5rem;
+            }
+            
+            .calendar-wrapper {
+                padding: 1.5rem;
+                max-width: 350px;
+            }
+            
+            .month-year {
+                font-size: 1.2rem;
+            }
+            
+            .day {
+                padding: 10px 6px;
+                font-size: 0.9rem;
+            }
+            
+            .confirm-date-btn {
+                padding: 16px 32px;
+                font-size: 1rem;
+            }
+            
+            .send-title {
+                font-size: 1.8rem;
+                margin-bottom: 1rem;
+            }
+            
+            .send-subtitle {
+                font-size: 1rem;
+                margin-bottom: 1.5rem;
+            }
+            
+            .summary-card, .contact-form {
+                padding: 1.5rem;
+                max-width: 350px;
+            }
+            
+            .summary-item {
+                padding: 0.8rem 0;
+            }
+            
+            .summary-label, .summary-value {
+                font-size: 0.9rem;
+            }
+            
+            .send-btn {
+                padding: 16px 32px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Фоновое изображение -->
+    <div class="background"></div>
+    
+    <!-- Темный оверлей -->
+    <div class="overlay"></div>
+    
+    <!-- Плавающие сердечки -->
+    <div class="floating-hearts">
+        <div class="heart">💖</div>
+        <div class="heart">💕</div>
+        <div class="heart">💝</div>
+        <div class="heart">💗</div>
+        <div class="heart">💓</div>
+    </div>
+    
+    <!-- Первая страница -->
+    <div class="page page-1 active">
+        <div class="container">
+            <div class="welcome-card">
+                <h1 class="title">Если ты здесь, значит, ты готова к встрече со мной</h1>
+                <p class="subtitle">Если да — жми дальше</p>
+                <button class="btn" onclick="nextPage()">Дальше</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Вторая страница - выбор приключений -->
+    <div class="page page-2">
+        <!-- Видео фон -->
+        <video class="video-background" autoplay muted loop>
+            <source src="222222222222222222222.mp4" type="video/mp4">
+        </video>
+        
+        <!-- Оверлей для видео -->
+        <div class="video-overlay"></div>
+        
+        <div class="adventures-container">
+            <h1 class="adventures-title">Выбирай наше приключение</h1>
+            
+            <div class="carousel-container">
+                <div class="carousel" id="adventureCarousel">
+                    <div class="adventure-card" onclick="selectAdventure('dinner')">
+                        <img src="ресторан.jpg" class="adventure-image" alt="Ужин">
+                        <div class="card-content">
+                            <h3 class="adventure-title">Ужин</h3>
+                            <p class="adventure-description">Романтичный ужин в красивом ресторане с вкусной едой</p>
+                            <button class="adventure-btn">Выбрать</button>
+                        </div>
+                    </div>
+                    
+                    <div class="adventure-card" onclick="selectAdventure('cinema')">
+                        <img src="cinema.jpg" class="adventure-image" alt="Кинотеатр">
+                        <div class="card-content">
+                            <h3 class="adventure-title">Кинотеатр</h3>
+                            <p class="adventure-description">Посмотрим хороший фильм в уютном кинотеатре</p>
+                            <button class="adventure-btn">Выбрать</button>
+                        </div>
+                    </div>
+                    
+                    <div class="adventure-card" onclick="selectAdventure('bowling')">
+                        <img src="bouling.jpg" class="adventure-image" alt="Боулинг">
+                        <div class="card-content">
+                            <h3 class="adventure-title">Боулинг</h3>
+                            <p class="adventure-description">Веселая игра в боулинг с компанией и смехом</p>
+                            <button class="adventure-btn">Выбрать</button>
+                        </div>
+                    </div>
+                    
+                    <div class="adventure-card" onclick="selectAdventure('horses')">
+                        <img src="лошадь.jpg" class="adventure-image" alt="Конная прогулка">
+                        <div class="card-content">
+                            <h3 class="adventure-title">Конная прогулка</h3>
+                            <p class="adventure-description">Прогулка на лошадях на природе и свежем воздухе</p>
+                            <button class="adventure-btn">Выбрать</button>
+                        </div>
+                    </div>
+                    
+                    <div class="adventure-card" onclick="selectAdventure('karting')">
+                        <img src="картинг.jpg" class="adventure-image" alt="Картинг">
+                        <div class="card-content">
+                            <h3 class="adventure-title">Картинг</h3>
+                            <p class="adventure-description">Адреналиновые гонки на картах и соревнования</p>
+                            <button class="adventure-btn">Выбрать</button>
+                        </div>
+                    </div>
+                </div>
+                
+                
+            </div>
+            <div class="carousel-hint" style="margin-bottom: -25px;">
+                Проведи пальцем влево или вправо для выбора приключения
+            </div>
+        </div>
+    </div>
+
+    <!-- Третья страница - выбор даты -->
+    <div class="page page-3">
+        <!-- Видео фон -->
+        <video class="video-background" autoplay muted loop>
+            <source src="222222222222222222222.mp4" type="video/mp4">
+        </video>
+        
+        <!-- Оверлей для видео -->
+        <div class="video-overlay"></div>
+        
+        <div class="date-container">
+            <h1 class="date-title">На какую дату мы можем встретиться?</h1>
+            
+            <div class="calendar-wrapper">
+                <div class="calendar">
+                    <div class="calendar-header">
+                        <button class="nav-button" onclick="changeMonth(-1)">←</button>
+                        <div class="month-year" id="monthYear"></div>
+                        <button class="nav-button" onclick="changeMonth(1)">→</button>
+                    </div>
+                    
+                    <div class="calendar-grid" id="calendarGrid">
+                        <!-- Календарь будет сгенерирован JavaScript -->
+                    </div>
+                </div>
+                
+                <button class="confirm-date-btn" id="confirmDateBtn" onclick="confirmDate()">
+                    Подтвердить дату
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Четвертая страница - отправка информации -->
+    <div class="page page-4">
+        <!-- Видео фон -->
+        <video class="video-background" autoplay muted loop>
+            <source src="222222222222222222222.mp4" type="video/mp4">
+        </video>
+        
+        <!-- Оверлей для видео -->
+        <div class="video-overlay"></div>
+        
+        <div class="send-container">
+            <h1 class="send-title">Подтверди свой выбор</h1>
+            <p class="send-subtitle">Я получу уведомление о твоем выборе и свяжусь с тобой</p>
+            
+            <!-- Карточка с сводкой выбора -->
+            <div class="summary-card">
+                <div class="summary-item">
+                    <span class="summary-label">Приключение:</span>
+                    <span class="summary-value" id="selectedAdventureDisplay"></span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Дата:</span>
+                    <span class="summary-value" id="selectedDateDisplay"></span>
+                </div>
+            </div>
+            
+            <!-- Кнопка отправки -->
+            <div class="contact-form">
+                <button class="send-btn" onclick="sendSelection()">
+                    🚀 ОТПРАВИТЬ ВЫБОР
+                </button>
+            </div>    
+                <div class="success-message" id="successMessage">
+                    ✓ Отлично! Я получил твой выбор и скоро свяжусь с тобой! 😊
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        
+        let selectedAdventure = '';
+        let selectedDate = null;
+        let currentMonth = new Date().getMonth();
+        let currentYear = new Date().getFullYear();
+        
+        function selectAdventure(type) {
+            const adventures = {
+                'dinner': 'Ужин',
+                'cinema': 'Кинотеатр',
+                'bowling': 'Боулинг',
+                'horses': 'Конная прогулка',
+                'karting': 'Картинг'
+            };
+            
+            // Останавливаем автопрокрутку при выборе
+            clearInterval(window.carouselInterval);
+            
+            // Сохраняем выбор и переходим к календарю
+            selectedAdventure = adventures[type];
+            showDatePage();
+        }
+        
+        function showDatePage() {
+            // Переход на третью страницу
+            document.querySelector('.page-2').classList.remove('active');
+            document.querySelector('.page-3').classList.add('active');
+            
+            // Инициализируем календарь
+            generateCalendar();
+        }
+        
+        // Автопрокрутка карусели
+        function startCarouselAutoScroll() {
+            const carousel = document.getElementById('adventureCarousel');
+            const cards = carousel.querySelectorAll('.adventure-card');
+            let currentIndex = 0;
+            
+            window.carouselInterval = setInterval(() => {
+                currentIndex = (currentIndex + 1) % cards.length;
+                const cardWidth = cards[0].offsetWidth;
+                carousel.scrollTo({
+                    left: cardWidth * currentIndex,
+                    behavior: 'smooth'
+                });
+            }, 3000); // Каждые 3 секунды
+        }
+        
+        // Запускаем автопрокрутку при переходе на вторую страницу
+        function nextPage() {
+            // Переход на вторую страницу
+            document.querySelector('.page-1').classList.remove('active');
+            document.querySelector('.page-2').classList.add('active');
+            
+            // Сменяем фон на видео
+            document.querySelector('.background').style.display = 'none';
+            document.querySelector('.overlay').style.display = 'none';
+            
+            // Запускаем автопрокрутку через небольшую задержку
+            setTimeout(() => {
+                startCarouselAutoScroll();
+                setupCarouselTouchEvents();
+            }, 500);
+        }
+        
+        function setupCarouselTouchEvents() {
+            const carousel = document.getElementById('adventureCarousel');
+            
+            // Останавливаем автопрокрутку при начале свайпа
+            carousel.addEventListener('touchstart', () => {
+                clearInterval(window.carouselInterval);
+            });
+            
+            carousel.addEventListener('mousedown', () => {
+                clearInterval(window.carouselInterval);
+            });
+            
+            // Возобновляем автопрокрутку через 5 секунд после окончания свайпа
+            let resumeTimeout;
+            
+            carousel.addEventListener('touchend', () => {
+                clearTimeout(resumeTimeout);
+                resumeTimeout = setTimeout(startCarouselAutoScroll, 5000);
+            });
+            
+            carousel.addEventListener('mouseup', () => {
+                clearTimeout(resumeTimeout);
+                resumeTimeout = setTimeout(startCarouselAutoScroll, 5000);
+            });
+        }
+        
+        // Календарь
+        function generateCalendar() {
+            const monthNames = [
+                'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
+                'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
+            ];
+            
+            const dayNames = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+            
+            // Обновляем заголовок
+            document.getElementById('monthYear').textContent = `${monthNames[currentMonth]} ${currentYear}`;
+            
+            const grid = document.getElementById('calendarGrid');
+            grid.innerHTML = '';
+            
+            // Добавляем заголовки дней недели
+            dayNames.forEach(day => {
+                const dayHeader = document.createElement('div');
+                dayHeader.className = 'day-header';
+                dayHeader.textContent = day;
+                grid.appendChild(dayHeader);
+            });
+            
+            // Получаем первый день месяца и количество дней
+            const firstDay = new Date(currentYear, currentMonth, 1);
+            const lastDay = new Date(currentYear, currentMonth + 1, 0);
+            const daysInMonth = lastDay.getDate();
+            const startDay = (firstDay.getDay() + 6) % 7; // Понедельник = 0
+            
+            const today = new Date();
+            
+            // Добавляем пустые клетки для предыдущего месяца
+            for (let i = 0; i < startDay; i++) {
+                const emptyDay = document.createElement('div');
+                emptyDay.className = 'day other-month';
+                grid.appendChild(emptyDay);
+            }
+            
+            // Добавляем дни текущего месяца
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayElement = document.createElement('div');
+                dayElement.className = 'day';
+                dayElement.textContent = day;
+                
+                const currentDate = new Date(currentYear, currentMonth, day);
+                
+                // Отмечаем сегодняшний день
+                if (currentDate.toDateString() === today.toDateString()) {
+                    dayElement.classList.add('today');
+                }
+                
+                // Не даем выбирать прошедшие даты
+                if (currentDate >= today || currentDate.toDateString() === today.toDateString()) {
+                    dayElement.addEventListener('click', () => selectDate(currentYear, currentMonth, day));
+                } else {
+                    dayElement.style.opacity = '0.3';
+                    dayElement.style.cursor = 'not-allowed';
+                }
+                
+                grid.appendChild(dayElement);
+            }
+        }
+        
+        function changeMonth(direction) {
+            currentMonth += direction;
+            
+            if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            } else if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            }
+            
+            // Не даем перейти в прошлые месяцы
+            const today = new Date();
+            if (currentYear < today.getFullYear() || 
+                (currentYear === today.getFullYear() && currentMonth < today.getMonth())) {
+                currentMonth = today.getMonth();
+                currentYear = today.getFullYear();
+                return;
+            }
+            
+            generateCalendar();
+        }
+        
+        function selectDate(year, month, day) {
+            // Убираем предыдущий выбор
+            document.querySelectorAll('.day.selected').forEach(el => el.classList.remove('selected'));
+            
+            // Отмечаем новый выбор
+            event.target.classList.add('selected');
+            
+            selectedDate = new Date(year, month, day);
+            
+            // Активируем кнопку подтверждения
+            document.getElementById('confirmDateBtn').classList.add('active');
+        }
+        
+        function confirmDate() {
+            if (!selectedDate) return;
+            
+            // Переход на четвертую страницу
+            showSendPage();
+        }
+        
+        function showSendPage() {
+            // Переход на четвертую страницу
+            document.querySelector('.page-3').classList.remove('active');
+            document.querySelector('.page-4').classList.add('active');
+            
+            // Отображаем сводку выбора
+            const options = { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                weekday: 'long'
+            };
+            
+            const formattedDate = selectedDate.toLocaleDateString('ru-RU', options);
+            
+            document.getElementById('selectedAdventureDisplay').textContent = selectedAdventure;
+            document.getElementById('selectedDateDisplay').textContent = formattedDate;
+        }
+        
+        function sendSelection() {
+            // Формируем данные для отправки
+            const formattedDate = selectedDate.toLocaleDateString('ru-RU', {
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                weekday: 'long'
+            });
+            
+            const message = 
+                          `🎆 Приключение: ${selectedAdventure}\n` +
+                          `📅 Дата: ${formattedDate}`;
+            
+            // Отправляем в WhatsApp
+            sendToWhatsApp(message);
+            
+            // Показываем сообщение об успехе
+            document.getElementById('successMessage').style.display = 'block';
+        }
+
+        // Эффект сердечек при клике
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('.btn')) {
+                createHeartEffect(e.clientX, e.clientY);
+            }
+        });
+
+        function createHeartEffect(x, y) {
+            const heart = document.createElement('div');
+            heart.innerHTML = '💖';
+            heart.style.position = 'fixed';
+            heart.style.left = x + 'px';
+            heart.style.top = y + 'px';
+            heart.style.fontSize = '24px';
+            heart.style.pointerEvents = 'none';
+            heart.style.zIndex = '1000';
+            heart.style.animation = 'heartBurst 1s ease-out forwards';
+            
+            document.body.appendChild(heart);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, 1000);
+        }
+
+        // Функция для отправки в WhatsApp
+        function sendToWhatsApp(message) {
+            // Кодируем сообщение для URL
+            const encodedMessage = encodeURIComponent(message);
+            
+            // Ваш номер WhatsApp (без + и пробелов)
+            const phoneNumber = '77750717135';
+            
+            // Создаем ссылку для WhatsApp с готовым текстом
+            const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+            
+            // Показываем уведомление
+            showWhatsAppNotification();
+            
+            // Открываем WhatsApp через полсекунды
+            setTimeout(() => {
+                window.open(whatsappUrl, '_blank');
+            }, 500);
+            
+            console.log('Открываем WhatsApp с сообщением:', message);
+        }
+        
+        // Функция для показа уведомления о WhatsApp
+        function showWhatsAppNotification() {
+            const notification = document.createElement('div');
+            notification.innerHTML = '📱 Открываем WhatsApp...<br>🚀 Сообщение готово к отправке!';
+            notification.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: linear-gradient(135deg, #25D366, #128C7E);
+                color: white;
+                padding: 20px;
+                border-radius: 15px;
+                text-align: center;
+                z-index: 10000;
+                font-size: 16px;
+                font-weight: bold;
+                box-shadow: 0 10px 30px rgba(37, 211, 102, 0.3);
+                backdrop-filter: blur(10px);
+            `;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                if (document.body.contains(notification)) {
+                    document.body.removeChild(notification);
+                }
+            }, 2000);
+        }
+        
+        // Добавляем стиль для анимации сердечек при клике
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes heartBurst {
+                0% {
+                    transform: scale(0) rotate(0deg);
+                    opacity: 1;
+                }
+                50% {
+                    transform: scale(1.2) rotate(180deg);
+                    opacity: 1;
+                }
+                100% {
+                    transform: scale(0) rotate(360deg);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
