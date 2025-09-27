@@ -373,6 +373,47 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
         
+        /* Точки-индикаторы карусели */
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px 25px;
+            border-radius: 30px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.6);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+        }
+        
+        .dot.active {
+            background: #ff6b6b;
+            border-color: #ff6b6b;
+            transform: scale(1.4);
+            box-shadow: 0 0 15px rgba(255, 107, 107, 0.9), 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+        
+        .dot:hover {
+            background: rgba(255, 255, 255, 0.9);
+            transform: scale(1.2);
+            box-shadow: 0 0 12px rgba(255, 255, 255, 0.7), 0 2px 8px rgba(0, 0, 0, 0.4);
+        }
+        
         /* Третья страница - выбор даты */
         .page-3 {
             position: relative;
@@ -862,7 +903,15 @@
                     </div>
                 </div>
                 
-                
+            </div>
+            
+            <!-- Точки-индикаторы -->
+            <div class="carousel-dots">
+                <span class="dot active" data-index="0"></span>
+                <span class="dot" data-index="1"></span>
+                <span class="dot" data-index="2"></span>
+                <span class="dot" data-index="3"></span>
+                <span class="dot" data-index="4"></span>
             </div>
         </div>
     </div>
@@ -971,20 +1020,53 @@
             generateCalendar();
         }
         
+        // Переменные для карусели
+        let carouselCurrentIndex = 0;
+        let carouselInterval = null;
+        let carouselCards = [];
+        let carouselContainer = null;
+        
+        // Инициализация карусели
+        function initCarousel() {
+            carouselContainer = document.getElementById('adventureCarousel');
+            carouselCards = carouselContainer.querySelectorAll('.adventure-card');
+            carouselCurrentIndex = 0;
+            
+            // Обновляем точки
+            updateDots(carouselCurrentIndex);
+            
+            // Настраиваем обработчики
+            setupDotClickEvents();
+            setupCarouselTouchEvents();
+            
+            // Запускаем автопрокрутку
+            startCarouselAutoScroll();
+        }
+        
         // Автопрокрутка карусели
         function startCarouselAutoScroll() {
-            const carousel = document.getElementById('adventureCarousel');
-            const cards = carousel.querySelectorAll('.adventure-card');
-            let currentIndex = 0;
+            if (carouselInterval) {
+                clearInterval(carouselInterval);
+            }
             
-            window.carouselInterval = setInterval(() => {
-                currentIndex = (currentIndex + 1) % cards.length;
-                const cardWidth = cards[0].offsetWidth;
-                carousel.scrollTo({
-                    left: cardWidth * currentIndex,
-                    behavior: 'smooth'
-                });
+            carouselInterval = setInterval(() => {
+                carouselCurrentIndex = (carouselCurrentIndex + 1) % carouselCards.length;
+                scrollToCard(carouselCurrentIndex);
             }, 3000); // Каждые 3 секунды
+        }
+        
+        // Переход к конкретной карточке
+        function scrollToCard(index) {
+            if (!carouselContainer || !carouselCards.length) return;
+            
+            const cardWidth = carouselCards[0].offsetWidth;
+            carouselContainer.scrollTo({
+                left: cardWidth * index,
+                behavior: 'smooth'
+            });
+            
+            carouselCurrentIndex = index;
+            updateDots(index);
         }
         
         // Запускаем автопрокрутку при переходе на вторую страницу
@@ -997,36 +1079,98 @@
             document.querySelector('.background').style.display = 'none';
             document.querySelector('.overlay').style.display = 'none';
             
-            // Запускаем автопрокрутку через небольшую задержку
+            // Инициализируем карусель через небольшую задержку
             setTimeout(() => {
-                startCarouselAutoScroll();
-                setupCarouselTouchEvents();
-            }, 500);
+                initCarousel();
+            }, 1000);
         }
         
         function setupCarouselTouchEvents() {
-            const carousel = document.getElementById('adventureCarousel');
+            if (!carouselContainer) return;
             
             // Останавливаем автопрокрутку при начале свайпа
-            carousel.addEventListener('touchstart', () => {
-                clearInterval(window.carouselInterval);
+            carouselContainer.addEventListener('touchstart', () => {
+                if (carouselInterval) {
+                    clearInterval(carouselInterval);
+                    carouselInterval = null;
+                }
             });
             
-            carousel.addEventListener('mousedown', () => {
-                clearInterval(window.carouselInterval);
+            carouselContainer.addEventListener('mousedown', () => {
+                if (carouselInterval) {
+                    clearInterval(carouselInterval);
+                    carouselInterval = null;
+                }
             });
             
             // Возобновляем автопрокрутку через 5 секунд после окончания свайпа
             let resumeTimeout;
             
-            carousel.addEventListener('touchend', () => {
+            carouselContainer.addEventListener('touchend', () => {
                 clearTimeout(resumeTimeout);
-                resumeTimeout = setTimeout(startCarouselAutoScroll, 5000);
+                resumeTimeout = setTimeout(() => {
+                    startCarouselAutoScroll();
+                }, 5000);
             });
             
-            carousel.addEventListener('mouseup', () => {
+            carouselContainer.addEventListener('mouseup', () => {
                 clearTimeout(resumeTimeout);
-                resumeTimeout = setTimeout(startCarouselAutoScroll, 5000);
+                resumeTimeout = setTimeout(() => {
+                    startCarouselAutoScroll();
+                }, 5000);
+            });
+            
+            // Отслеживаем скролл для обновления точек
+            carouselContainer.addEventListener('scroll', () => {
+                if (!carouselCards.length) return;
+                
+                const cardWidth = carouselCards[0].offsetWidth;
+                const scrollLeft = carouselContainer.scrollLeft;
+                const newIndex = Math.round(scrollLeft / cardWidth);
+                
+                if (newIndex !== carouselCurrentIndex && newIndex >= 0 && newIndex < carouselCards.length) {
+                    carouselCurrentIndex = newIndex;
+                    updateDots(carouselCurrentIndex);
+                }
+            });
+        }
+        
+        // Функция для обновления точек-индикаторов
+        function updateDots(activeIndex) {
+            const dots = document.querySelectorAll('.dot');
+            dots.forEach((dot, index) => {
+                if (index === activeIndex) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+        
+        // Функция для перехода к конкретной карточке по клику на точку
+        function goToSlide(index) {
+            // Останавливаем автопрокрутку
+            if (carouselInterval) {
+                clearInterval(carouselInterval);
+                carouselInterval = null;
+            }
+            
+            // Переходим к нужной карточке
+            scrollToCard(index);
+            
+            // Возобновляем автопрокрутку через 5 секунд
+            setTimeout(() => {
+                startCarouselAutoScroll();
+            }, 5000);
+        }
+        
+        // Добавляем обработчики кликов на точки
+        function setupDotClickEvents() {
+            const dots = document.querySelectorAll('.dot');
+            dots.forEach((dot, index) => {
+                dot.addEventListener('click', () => {
+                    goToSlide(index);
+                });
             });
         }
         
