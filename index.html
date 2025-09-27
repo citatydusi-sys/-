@@ -236,7 +236,7 @@
         .carousel-container {
             position: relative;
             width: 100%;
-            height: 85vh;
+            height: 70vh;
             max-width: 100%;
             overflow: hidden;
         }
@@ -378,40 +378,40 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 20px;
+            gap: 15px;
             position: absolute;
-            bottom: 30px;
+            bottom: 80px;
             left: 50%;
             transform: translateX(-50%);
             z-index: 1000;
             background: rgba(0, 0, 0, 0.3);
-            padding: 15px 25px;
-            border-radius: 30px;
+            padding: 10px 20px;
+            border-radius: 25px;
             backdrop-filter: blur(10px);
         }
         
         .dot {
-            width: 14px;
-            height: 14px;
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.6);
             cursor: pointer;
             transition: all 0.3s ease;
-            border: 2px solid rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.9);
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
         }
         
         .dot.active {
             background: #ff6b6b;
             border-color: #ff6b6b;
-            transform: scale(1.4);
-            box-shadow: 0 0 15px rgba(255, 107, 107, 0.9), 0 2px 10px rgba(0, 0, 0, 0.5);
+            transform: scale(1.3);
+            box-shadow: 0 0 12px rgba(255, 107, 107, 0.9), 0 2px 8px rgba(0, 0, 0, 0.5);
         }
         
         .dot:hover {
             background: rgba(255, 255, 255, 0.9);
-            transform: scale(1.2);
-            box-shadow: 0 0 12px rgba(255, 255, 255, 0.7), 0 2px 8px rgba(0, 0, 0, 0.4);
+            transform: scale(1.1);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.7), 0 2px 6px rgba(0, 0, 0, 0.4);
         }
         
         /* Третья страница - выбор даты */
@@ -813,9 +813,51 @@
                 font-size: 1rem;
             }
         }
+        
+        /* Кнопка управления музыкой */
+        .music-control {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        .music-control:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+        
+        .music-control.muted {
+            background: rgba(255, 107, 107, 0.3);
+            border-color: rgba(255, 107, 107, 0.5);
+        }
     </style>
 </head>
 <body>
+    <!-- Фоновая музыка -->
+    <audio id="backgroundMusic" loop>
+        <source src="yte_tkb.ogg" type="audio/ogg">
+        Ваш браузер не поддерживает аудио.
+    </audio>
+    
+    <!-- Кнопка управления музыкой -->
+    <div class="music-control" id="musicControl" onclick="toggleMusic()" style="display: none;">
+        <span id="musicIcon">🎵</span>
+    </div>
+    
     <!-- Фоновое изображение -->
     <div class="background"></div>
     
@@ -854,7 +896,6 @@
         
         <div class="adventures-container">
             <h1 class="adventures-title">Выбирай наше приключение</h1>
-            <p style="color:white;">Проведи пальцем влево или вправо для выбора приключения</p>
             <div class="carousel-container">
                 <div class="carousel" id="adventureCarousel">
                     <div class="adventure-card" onclick="selectAdventure('dinner')">
@@ -1078,6 +1119,20 @@
             // Сменяем фон на видео
             document.querySelector('.background').style.display = 'none';
             document.querySelector('.overlay').style.display = 'none';
+            
+            // Запускаем фоновую музыку
+            const backgroundMusic = document.getElementById('backgroundMusic');
+            const musicControl = document.getElementById('musicControl');
+            if (backgroundMusic) {
+                backgroundMusic.volume = 0.3; // Устанавливаем громкость 30%
+                backgroundMusic.play().catch(error => {
+                    console.log('Не удалось запустить музыку:', error);
+                });
+                // Показываем кнопку управления музыкой
+                if (musicControl) {
+                    musicControl.style.display = 'flex';
+                }
+            }
             
             // Инициализируем карусель через небольшую задержку
             setTimeout(() => {
@@ -1367,6 +1422,25 @@
         }
         
         // Функция для показа уведомления о WhatsApp
+        // Функция управления музыкой
+        function toggleMusic() {
+            const backgroundMusic = document.getElementById('backgroundMusic');
+            const musicControl = document.getElementById('musicControl');
+            const musicIcon = document.getElementById('musicIcon');
+            
+            if (backgroundMusic.paused) {
+                backgroundMusic.play().catch(error => {
+                    console.log('Не удалось запустить музыку:', error);
+                });
+                musicIcon.textContent = '🎵';
+                musicControl.classList.remove('muted');
+            } else {
+                backgroundMusic.pause();
+                musicIcon.textContent = '🔇';
+                musicControl.classList.add('muted');
+            }
+        }
+        
         function showWhatsAppNotification() {
             const notification = document.createElement('div');
             notification.innerHTML = '📱 Открываем WhatsApp...<br>🚀 Сообщение готово к отправке!';
