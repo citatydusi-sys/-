@@ -877,8 +877,9 @@
     <div class="page page-1 active">
         <div class="container">
             <div class="welcome-card" style="margin-bottom: 80px;">
-                <h1 class="title">Привет жан! Бұл мен, осы ақ боз атты, сері жігітпін. Сені өте қатты жақсы көремін!</h1>
-                <p style = "color:white;">24інші қыркүйек пен 8 қазан аралығында менің демалыс уақытым болғандықтан, сені осы уақыт аралығында серуендеуге шақырғым келеді.</p>
+                <h1 class="title">Это моё приглашение для тебя.</h1>
+                <p style = "color:white;">Только для тебя.
+Ты согласна провести со мной этот вечер?</p>
                 
                 <button class="btn" onclick="nextPage()">Дальше</button>
             </div>
@@ -900,46 +901,46 @@
             <div class="carousel-container">
                 <div class="carousel" id="adventureCarousel">
                     <div class="adventure-card" onclick="selectAdventure('dinner')">
-                        <img src="ретро.jpg" class="adventure-image" alt="Ретро парк">
+                        <img src="ресторан.jpg" class="adventure-image" alt="ресторан">
                         <div class="card-content">
-                            <h3 class="adventure-title">Ретро парк</h3>
-                            <!-- <p class="adventure-description">Романтичный ужин в красивом ресторане с вкусной едой</p> -->
+                            <h3 class="adventure-title">Ужин</h3>
+                            <p class="adventure-description">Романтичный ужин в красивом ресторане с вкусной едой</p>
                             <button class="adventure-btn">Выбрать</button>
                         </div>
                     </div>
                     
                     <div class="adventure-card" onclick="selectAdventure('cinema')">
-                        <img src="набка.jpg" class="adventure-image" alt="старый набка">
+                        <img src="cinema.jpg" class="adventure-image" alt="cinema">
                         <div class="card-content">
-                            <h3 class="adventure-title">Набка</h3>
-                            <!-- <p class="adventure-description">старый набка юность</p> -->
+                            <h3 class="adventure-title">Кино</h3>
+                            <p class="adventure-description">Что может быть лучше, чем кино с тобой? 🍿</p>
                             <button class="adventure-btn">Выбрать</button>
                         </div>
                     </div>
                     
                     <div class="adventure-card" onclick="selectAdventure('bowling')">
-                        <img src="парк.jpg" class="adventure-image" alt="Парк победы">
+                        <img src="boulimg.jpg" class="adventure-image" alt="боулинг">
                         <div class="card-content">
-                            <h3 class="adventure-title">Парк победы</h3>
-                            <!-- <p class="adventure-description">Веселая игра в боулинг с компанией и смехом</p> -->
+                            <h3 class="adventure-title">Боулинг</h3>
+                            <p class="adventure-description">Веселая игра в боулинг с компанией и смехом</p>
                             <button class="adventure-btn">Выбрать</button>
                         </div>
                     </div>
                     
                     <div class="adventure-card" onclick="selectAdventure('horses')">
-                        <img src="двор.jpg" class="adventure-image" alt="У тебя во дворе">
+                        <img src="лошадь.jpg" class="adventure-image" alt="Лошадь">
                         <div class="card-content">
-                            <h3 class="adventure-title">У тебя во дворе</h3>
-                            <!-- <p class="adventure-description">Прогулка на лошадях на природе и свежем воздухе</p> -->
+                            <h3 class="adventure-title">Предлагаю провести время необычно — вместе прогуляться с лошадью.</h3>
+                            <p class="adventure-description">Прогулка на лошадях на природе и свежем воздухе</p>
                             <button class="adventure-btn">Выбрать</button>
                         </div>
                     </div>
                     
                     <div class="adventure-card" onclick="selectAdventure('karting')">
-                        <img src="друзья.jpg" class="adventure-image" alt="теплые посиделки с друзьями дома">
+                        <img src="картинг.jpg" class="adventure-image" alt="картинг">
                         <div class="card-content">
-                            <h3 class="adventure-title">теплые посиделки </h3>
-                            <!-- <p class="adventure-description">Адреналиновые гонки на картах и соревнования</p> -->
+                            <h3 class="adventure-title">Скорость, адреналин и море эмоций — давай проведём этот день ярко! </h3>
+                            <p class="adventure-description">Адреналиновые гонки на картах и соревнования</p>
                             <button class="adventure-btn">Выбрать</button>
                         </div>
                     </div>
@@ -1001,7 +1002,9 @@
         
         <div class="send-container">
             <!-- <h1 class="send-title">Ойбай</h1> -->
-            <p class="send-subtitle">Что бы жизнь малиной, не казалось)</p>
+            <p class="send-subtitle">Обещаю, будет весело, если ты рядом 😉.
+
+Встретимся, и пусть весь мир подождёт.</p>
             
             <!-- Карточка с сводкой выбора -->
             <div class="summary-card">
@@ -1038,11 +1041,11 @@
         
         function selectAdventure(type) {
             const adventures = {
-                'dinner': 'Ретро парк',
-                'cinema': 'старый набка, юность',
-                'bowling': 'Парк победы',
-                'horses': 'У тебя во дворе',
-                'karting': 'теплые посиделки'
+                'dinner': 'ресторан',
+                'cinema': 'cinema',
+                'bowling': 'боулинг',
+                'horses': 'Лошадь',
+                'karting': 'картинг'
             };
             
             // Останавливаем автопрокрутку при выборе
